@@ -20,7 +20,7 @@ public class Model {
 		lowerBound = 0;
 		upperBound = 10;
 		popSize = 30;
-		samSize = 15;
+		samSize = 10;
 		distType = 0;
 		defaultPopXVal();
 		for (int j = 0; j < popSize; j++)

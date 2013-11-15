@@ -146,7 +146,7 @@ public class View extends JFrame {
 		pnlSample.add(lblSample);
 
 		sliderSample = new JSlider(JSlider.HORIZONTAL, 1,
-				Integer.parseInt(txtPopSize.getText()), 15);
+				Integer.parseInt(txtPopSize.getText()), 10);
 		sliderSample.setBounds(40, 14, 650, 30);
 		sliderSample.setName("sliderSample");
 		sliderSample.setMinorTickSpacing(1);

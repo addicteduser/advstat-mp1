@@ -18,6 +18,7 @@ public class Controller {
 		this.myModel = model;
 		
 		setListeners();
+		refreshUI();
 	}
 	
 	public void setListeners() {
