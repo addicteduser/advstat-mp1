@@ -266,6 +266,19 @@ public class View extends JFrame {
 		tblSamMean.getColumnModel().getColumn(1).setResizable(false);
 		scrSamMean.setViewportView(tblSamMean);
 	}
+	
+	public void setPopDistTable(DefaultTableModel model) {
+		tblPop = new JTable();
+		tblPop.setModel(model);
+		scrPopDist.setViewportView(tblPop);
+		pnlPopulation.validate();
+	}
+	
+	public void setPopDistChart(DefaultCategoryDataset dataset) {
+		ChartPanel popChartPanel = new ChartPanel(createChart(
+				dataset, "Population Distribution"));
+		scrPopGraph.setViewportView(popChartPanel);
+	}
 
 	public JTextField getTxtPopSize() {
 		return txtPopSize;

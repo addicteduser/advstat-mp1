@@ -86,5 +86,7 @@ public class Controller {
 	public void refreshUI() {
 		myView.getLblPopMeanVal().setText(Double.toString(myModel.getMean()));
 		myView.getLblPopVarianceVal().setText(Double.toString(myModel.getVariance()));
+		myView.setPopDistTable(myModel.generatePopDistTable());
+		myView.setPopDistChart(myModel.generatePopDataSet());
 	}
 }
