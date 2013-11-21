@@ -28,6 +28,21 @@ public class Controller {
 				int value = myView.getDistributionType().getSelectedIndex();
 				myModel.setDistType(value);
 				
+				switch(value) {
+				case 0: // UNIFORM
+					break;
+				case 1: // POSITIVELY SKEWED
+					break;
+				case 2: // NEGATIVELY SKEWED
+					break;
+				case 3: // BIMODAL
+					break;
+				case 4: // NORMAL
+					break;
+				case 5: // RANDOM
+					break;
+				}
+				
 				// CODE TO COMPUTE POP DIST
 				refreshUI();
 			}

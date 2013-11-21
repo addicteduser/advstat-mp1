@@ -8,16 +8,21 @@ import javax.swing.table.DefaultTableModel;
 
 import org.jfree.data.category.DefaultCategoryDataset;
 
+import dataGeneration.DataGenerator;
+import dataGeneration.UniformDataGenerator;
+
 public class Model {
 	private int lowerBound;
 	private int upperBound;
-	private int popSize;
-	private int samSize;
+	private int popSize; // N
+	private int samSize; // n
 	private int distType;
-	private double mean;
-	private double variance;
-	private ArrayList<Integer> popXVal;
+	private double mean; // Population Mean
+	private double variance; // Population Variance
+	private ArrayList<Integer> popXVal; // Population X
+	private ArrayList<Double> popYVal; // Population f(x)
 	private Map<Integer, Integer> xMap = new HashMap<Integer, Integer>();
+	private DataGenerator datGen;
 
 	public Model() {
 		// INDICATE DEFAULT VALUES HERE
@@ -26,25 +31,14 @@ public class Model {
 		popSize = 30;
 		samSize = 10;
 		distType = 0;
-		defaultPopXVal();
-		mean = computeMean(popXVal);
+		datGen = new UniformDataGenerator();
+		
+		popXVal = datGen.generateXData(lowerBound, upperBound, popSize);
+		popYVal = datGen.generateYData(popXVal, popSize);
+		mean = computePopMean();
 		System.out.println(mean);
-		variance = computeVariance(popXVal);
+		variance = computePopVariance();
 		generatePopDistTable();
-	}
-
-	private void defaultPopXVal() {
-		popXVal = new ArrayList<Integer>();
-		int ctr1 = 0;
-		int ctr2 = 1;
-		for (int i = 0; i < popSize; i++) {
-			if (ctr1 == 3) {
-				ctr1 = 0;
-				ctr2++;
-			}
-			popXVal.add(ctr2);
-			ctr1++;
-		}
 	}
 	
 	/**
@@ -60,24 +54,24 @@ public class Model {
 	 * 
 	 * @return
 	 */
-	public double computeMean(ArrayList<Integer> xVal) {
+	public double computePopMean() {
 		double value = 0;
 
-		for (int i = 0; i < xVal.size(); i++) {
-			value += xVal.get(i) * (1.0 / popSize);
+		for (int i = 0; i < popXVal.size(); i++) {
+			value += 1.0 * popXVal.get(i) * popYVal.get(i);
 		}
 
 		return roundOff(value);
 	}
 
-	public double computeVariance(ArrayList<Integer> xVal) {
+	public double computePopVariance() {
 		double value = 0;
 
-		for (int i = 0; i < xVal.size(); i++) {
-			value += xVal.get(i) * xVal.get(i) * (1.0 / popSize);
+		for (int i = 0; i < popXVal.size(); i++) {
+			value += 1.0 * Math.pow(popXVal.get(i), 2) * popYVal.get(i);
 		}
 		
-		value = value - mean * mean;
+		value = value - Math.pow(mean, 2);
 
 		return roundOff(value);
 	}

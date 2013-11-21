@@ -11,7 +11,7 @@ public class PositivelySkewedDataGenerator extends DataGenerator {
 	int middlefreq;
 	
 	@Override
-	public ArrayList<Integer> generateData(int lowerBound, int upperBound,
+	public ArrayList<Integer> generateXData(int lowerBound, int upperBound,
 			int population) {
 		System.out.println("Lowerbound: " + lowerBound);
 		System.out.println("Upperbound: " + upperBound);
@@ -82,5 +82,12 @@ public class PositivelySkewedDataGenerator extends DataGenerator {
 		Collections.sort(xValues);
 		
 		return xValues;
+	}
+
+	@Override
+	public ArrayList<Double> generateYData(ArrayList<Integer> xData,
+			int population) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

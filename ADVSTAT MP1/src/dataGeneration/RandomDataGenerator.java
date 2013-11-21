@@ -5,8 +5,7 @@ import java.util.Random;
 
 public class RandomDataGenerator extends DataGenerator {
 
-	@Override
-	public ArrayList<Integer> generateData(int lowerBound, int upperBound,
+	public ArrayList<Integer> generateXData(int lowerBound, int upperBound,
 			int population) {
 		ran = new Random();
 		xValues = new ArrayList<Integer>();
@@ -26,6 +25,13 @@ public class RandomDataGenerator extends DataGenerator {
 		sortData(xValues);
 
 		return xValues;
+	}
+
+	@Override
+	public ArrayList<Double> generateYData(ArrayList<Integer> xData,
+			int population) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

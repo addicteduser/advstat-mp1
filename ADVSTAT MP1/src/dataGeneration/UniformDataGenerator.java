@@ -9,7 +9,7 @@ public class UniformDataGenerator extends DataGenerator {
 	ArrayList<Integer> genValues = new ArrayList<Integer>();
 	
 	@Override
-	public ArrayList<Integer> generateData(int lowerBound, int upperBound,
+	public ArrayList<Integer> generateXData(int lowerBound, int upperBound,
 			int population) {
 		ran = new Random();
 		xValues = new ArrayList<Integer>();
@@ -40,6 +40,19 @@ public class UniformDataGenerator extends DataGenerator {
 		sortData(xValues);
 
 		return xValues;
+	}
+
+	@Override
+	public ArrayList<Double> generateYData(ArrayList<Integer> xData,
+			int population) {
+		ArrayList<Double> yData = new ArrayList<Double>();
+		
+		for(int i = 0; i < xData.size(); i++) {
+			double value = roundOff(1.0 / population);
+			yData.add(value);
+		}
+		
+		return yData;
 	}
 
 }

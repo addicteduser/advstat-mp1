@@ -17,8 +17,10 @@ public abstract class DataGenerator {
 	 * @return a list of x-values from lowerbound to upperbound where the number
 	 *         of x-values is population
 	 */
-	public abstract ArrayList<Integer> generateData(int lowerBound,
+	public abstract ArrayList<Integer> generateXData(int lowerBound,
 			int upperBound, int population);
+	
+	public abstract ArrayList<Double> generateYData(ArrayList<Integer> xData, int population);
 
 	/**
 	 * Sorts the currentList from smallest value to biggest value
@@ -31,5 +33,9 @@ public abstract class DataGenerator {
 	public ArrayList<Integer> sortData(ArrayList<Integer> currentList) {
 		Collections.sort(currentList);
 		return currentList;
+	}
+	
+	public double roundOff(double value) {
+		return (double) Math.round(value * 1000000) / 1000000;
 	}
 }
