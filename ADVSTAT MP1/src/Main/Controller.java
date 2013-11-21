@@ -27,7 +27,7 @@ public class Controller {
 			public void actionPerformed(ActionEvent e) {
 				int value = myView.getDistributionType().getSelectedIndex();
 				myModel.setDistType(value);
-				myModel.generatePopData();
+				
 				
 				
 				
@@ -87,6 +87,7 @@ public class Controller {
 	}
 	
 	public void refreshUI() {
+		myModel.generatePopData();
 		myView.getLblPopMeanVal().setText(Double.toString(myModel.getMean()));
 		myView.getLblPopVarianceVal().setText(Double.toString(myModel.getVariance()));
 		myView.setPopDistTable(myModel.generatePopDistTable());

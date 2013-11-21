@@ -9,6 +9,7 @@ import javax.swing.table.DefaultTableModel;
 import org.jfree.data.category.DefaultCategoryDataset;
 
 import dataGeneration.DataGenerator;
+import dataGeneration.RandomDataGenerator;
 import dataGeneration.UniformDataGenerator;
 
 public class Model {
@@ -59,20 +60,27 @@ public class Model {
 		switch (distType) {
 		case 0: // UNIFORM
 			datGen = new UniformDataGenerator();
+			System.out.println("\nUNIFORM");
 			break;
-		case 1: // POSITIVELY SKEWED
+		case 1: // SKEWED
+			System.out.println("\nSKEWED");
 			break;
-		case 2: // NEGATIVELY SKEWED
+		case 2: // BIMODAL
+			System.out.println("\nBIMODAL");
 			break;
-		case 3: // BIMODAL
+		case 3: // NORMAL
+			System.out.println("\nNORMAL");
 			break;
-		case 4: // NORMAL
-			break;
-		case 5: // RANDOM
+		case 4: // RANDOM
+			System.out.println("\nRANDOM");
+			datGen = new RandomDataGenerator();
 			break;
 		}
 		popXVal = datGen.generateXData(lowerBound, upperBound, popSize);
 		popYVal = datGen.generateYData(popXVal, popSize);
+		mean = computePopMean();
+		variance = computePopVariance();
+		printData();
 	}
 
 	/**

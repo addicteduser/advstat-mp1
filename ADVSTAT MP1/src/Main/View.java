@@ -193,8 +193,7 @@ public class View extends JFrame {
 		distributionType.setFont(new Font("Rockwell", Font.PLAIN, 20));
 		DefaultComboBoxModel<String> comboBoxModel = new DefaultComboBoxModel<>();
 		comboBoxModel.addElement("Uniform");
-		comboBoxModel.addElement("Positively Skewed");
-		comboBoxModel.addElement("Negatively Skewed");
+		comboBoxModel.addElement("Skewed");
 		comboBoxModel.addElement("Bimodal");
 		comboBoxModel.addElement("Normal");
 		comboBoxModel.addElement("Random");

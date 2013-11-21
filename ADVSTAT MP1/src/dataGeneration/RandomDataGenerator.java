@@ -22,7 +22,7 @@ public class RandomDataGenerator extends DataGenerator {
 			}
 		}
 
-		sortData(xValues);
+		//sortData(xValues);
 
 		return xValues;
 	}
@@ -33,7 +33,7 @@ public class RandomDataGenerator extends DataGenerator {
 		ArrayList<Double> yData = new ArrayList<Double>();
 
 		for (int i = 0; i < xData.size(); i++) {
-			double value = roundOff(xData.get(i) / population);
+			double value = roundOff(1.0 * xData.get(i) / population);
 			yData.add(value);
 		}
 
