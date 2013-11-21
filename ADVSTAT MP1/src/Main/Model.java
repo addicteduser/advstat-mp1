@@ -31,19 +31,55 @@ public class Model {
 		popSize = 30;
 		samSize = 10;
 		distType = 0;
+
 		datGen = new UniformDataGenerator();
-		
 		popXVal = datGen.generateXData(lowerBound, upperBound, popSize);
 		popYVal = datGen.generateYData(popXVal, popSize);
+
 		mean = computePopMean();
-		System.out.println(mean);
 		variance = computePopVariance();
-		generatePopDistTable();
+		printData();
+
+		// generatePopDistTable();
 	}
-	
+
+	/**
+	 * Prints the Population x, f(x), mean, and variance
+	 */
+	public void printData() {
+		System.out.println("x : f(x)");
+		for (int i = 0; i < popSize; i++) {
+			System.out.println(popXVal.get(i) + " : " + popYVal.get(i));
+		}
+		System.out.println("MEAN: " + mean);
+		System.out.println("VARIANCE: " + variance);
+	}
+
+	public void generatePopData() {
+		switch (distType) {
+		case 0: // UNIFORM
+			datGen = new UniformDataGenerator();
+			break;
+		case 1: // POSITIVELY SKEWED
+			break;
+		case 2: // NEGATIVELY SKEWED
+			break;
+		case 3: // BIMODAL
+			break;
+		case 4: // NORMAL
+			break;
+		case 5: // RANDOM
+			break;
+		}
+		popXVal = datGen.generateXData(lowerBound, upperBound, popSize);
+		popYVal = datGen.generateYData(popXVal, popSize);
+	}
+
 	/**
 	 * Rounds of value to 6 decimal places
-	 * @param value - value to be rounded off
+	 * 
+	 * @param value
+	 *            - value to be rounded off
 	 * @return value rounded off to 6 decimal places
 	 */
 	public double roundOff(double value) {
@@ -57,7 +93,7 @@ public class Model {
 	public double computePopMean() {
 		double value = 0;
 
-		for (int i = 0; i < popXVal.size(); i++) {
+		for (int i = 0; i < popSize; i++) {
 			value += 1.0 * popXVal.get(i) * popYVal.get(i);
 		}
 
@@ -67,54 +103,59 @@ public class Model {
 	public double computePopVariance() {
 		double value = 0;
 
-		for (int i = 0; i < popXVal.size(); i++) {
+		for (int i = 0; i < popSize; i++) {
 			value += 1.0 * Math.pow(popXVal.get(i), 2) * popYVal.get(i);
 		}
-		
+
 		value = value - Math.pow(mean, 2);
 
 		return roundOff(value);
 	}
-	
+
 	public DefaultTableModel generatePopDistTable() {
 		DefaultTableModel popDistModel = new DefaultTableModel();
-		
+
 		String[] distributionTableColumn = { "x", "f(x)" };
 		popDistModel.setColumnIdentifiers(distributionTableColumn);
-		
-		for(int i = 0; i < popSize; i++) {			
-			if (!xMap.containsKey(popXVal.get(i))) {
-				 xMap.put(popXVal.get(i), 1);
-			} else
-				xMap.put(popXVal.get(i), xMap.get(popXVal.get(i)) + 1);
-		}
-		
-		for(int i = 0; i < xMap.size(); i++) {
+
+		for (int i = 0; i < popSize; i++) {
 			Object[] row = new Object[2];
-		}
-		
-		for (Map.Entry<Integer, Integer> i : xMap.entrySet()) {
-			Object[] row = new Object[2];
-			row[0] = i.getKey();
-			row[1] = roundOff(1.0 * i.getValue() / popSize);
+			row[0] = popXVal.get(i);
+			row[1] = popYVal.get(i);
 			popDistModel.addRow(row);
 		}
-		
+
+		// Get unique x values
+		/*
+		 * for(int i = 0; i < popSize; i++) { if
+		 * (!xMap.containsKey(popXVal.get(i))) xMap.put(popXVal.get(i), 1); else
+		 * xMap.put(popXVal.get(i), xMap.get(popXVal.get(i)) + 1); }
+		 * 
+		 * for (Map.Entry<Integer, Integer> i : xMap.entrySet()) { Object[] row
+		 * = new Object[2]; row[0] = i.getKey(); row[1] = roundOff(1.0 *
+		 * i.getValue() / popSize); popDistModel.addRow(row); }
+		 */
+
 		return popDistModel;
 	}
-	
+
 	public DefaultCategoryDataset generatePopDataSet() {
 		DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-		
-		Object[] keys = xMap.keySet().toArray();
-		
-		for(int i = 0; i < keys.length; i++) {
-			dataset.setValue((Number) keys[i], "b", Integer.toString(i));
+
+		/*
+		 * Object[] keys = xMap.keySet().toArray();
+		 * 
+		 * for(int i = 0; i < keys.length; i++) { dataset.setValue((Number)
+		 * keys[i], "b", Integer.toString(i)); }
+		 */
+
+		for (int i = 0; i < popSize; i++) {
+			dataset.setValue(popYVal.get(i), "x",
+					Integer.toString(popXVal.get(i)));
 		}
-		
+
 		return dataset;
 	}
-
 
 	// GETTERS and SETTERS
 	public int getLowerBound() {

@@ -20,19 +20,20 @@ public class UniformDataGenerator extends DataGenerator {
 		
 		Collections.shuffle(genValues);
 		
-		int i = 0;
+		int i = 0; // for population
 		int j = 0;
 		int k = 0;
 		
 		do{
 			j = ran.nextInt(population) + 1;
 		}while(population % j != 0);
-		
+		System.out.println(j);
 		while (i < population) {
 			for(int b = 0; b < j; b++) {
 				xValues.add(genValues.get(k));
+				System.out.println(i+": "+genValues.get(k));
 				i++;
-				System.out.println(i);
+				//System.out.println(i);
 			}
 			k++;
 		}
