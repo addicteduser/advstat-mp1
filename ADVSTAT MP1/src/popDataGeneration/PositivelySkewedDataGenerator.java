@@ -1,10 +1,10 @@
-package dataGeneration;
+package popDataGeneration;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
 
-public class PositivelySkewedDataGenerator extends DataGenerator {
+public class PositivelySkewedDataGenerator extends PopulationDataGenerator {
 
 	ArrayList<Integer> genValues = new ArrayList<Integer>();
 	ArrayList<Integer> positiveValues = new ArrayList<Integer>();

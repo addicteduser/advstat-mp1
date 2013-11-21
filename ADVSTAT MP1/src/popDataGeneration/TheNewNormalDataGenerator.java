@@ -1,4 +1,4 @@
-package dataGeneration;
+package popDataGeneration;
 
 import java.util.ArrayList;
 import java.util.Collections;

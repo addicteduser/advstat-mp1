@@ -1,10 +1,10 @@
-package dataGeneration;
+package popDataGeneration;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
 
-public abstract class DataGenerator {
+public abstract class PopulationDataGenerator {
 	protected ArrayList<Integer> xValues;
 	protected Random ran;
 

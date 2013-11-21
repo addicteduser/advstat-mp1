@@ -1,9 +1,9 @@
-package dataGeneration;
+package popDataGeneration;
 
 import java.util.ArrayList;
 import java.util.Random;
 
-public class RandomDataGenerator extends DataGenerator {
+public class RandomDataGenerator extends PopulationDataGenerator {
 
 	public ArrayList<Integer> generateXData(int lowerBound, int upperBound,
 			int population) {

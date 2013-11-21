@@ -1,10 +1,10 @@
-package dataGeneration;
+package popDataGeneration;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
 
-public class NormalDataGenerator extends DataGenerator {
+public class NormalDataGenerator extends PopulationDataGenerator {
 
 	ArrayList<Integer> genValues = new ArrayList<Integer>();
 	ArrayList<Integer> midValues = new ArrayList<Integer>();

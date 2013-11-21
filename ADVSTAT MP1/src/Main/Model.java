@@ -8,9 +8,10 @@ import javax.swing.table.DefaultTableModel;
 
 import org.jfree.data.category.DefaultCategoryDataset;
 
-import dataGeneration.DataGenerator;
-import dataGeneration.RandomDataGenerator;
-import dataGeneration.UniformDataGenerator;
+import popDataGeneration.PopulationDataGenerator;
+import popDataGeneration.RandomDataGenerator;
+import popDataGeneration.UniformDataGenerator;
+import samDataGeneration.SampleDataGenerator;
 
 public class Model {
 	private int lowerBound;
@@ -18,12 +19,21 @@ public class Model {
 	private int popSize; // N
 	private int samSize; // n
 	private int distType;
-	private double mean; // Population Mean
-	private double variance; // Population Variance
+	
+	private PopulationDataGenerator popDataGen;
 	private ArrayList<Integer> popXVal; // Population X
 	private ArrayList<Double> popYVal; // Population f(x)
+	private double popMean; // Population Mean
+	private double popVariance; // Population Variance
+	
+	private SampleDataGenerator samDataGen;
+	private ArrayList<Double> samXVal;
+	private ArrayList<Double> samYVal;
+	private double samMean;
+	private double samVariance;
+	
 	private Map<Integer, Integer> xMap = new HashMap<Integer, Integer>();
-	private DataGenerator datGen;
+	
 
 	public Model() {
 		// INDICATE DEFAULT VALUES HERE
@@ -33,12 +43,12 @@ public class Model {
 		samSize = 10;
 		distType = 0;
 
-		datGen = new UniformDataGenerator();
-		popXVal = datGen.generateXData(lowerBound, upperBound, popSize);
-		popYVal = datGen.generateYData(popXVal, popSize);
+		popDataGen = new UniformDataGenerator();
+		popXVal = popDataGen.generateXData(lowerBound, upperBound, popSize);
+		popYVal = popDataGen.generateYData(popXVal, popSize);
 
-		mean = computePopMean();
-		variance = computePopVariance();
+		popMean = computePopMean();
+		popVariance = computePopVariance();
 		printData();
 
 		// generatePopDistTable();
@@ -52,14 +62,14 @@ public class Model {
 		for (int i = 0; i < popSize; i++) {
 			System.out.println(popXVal.get(i) + " : " + popYVal.get(i));
 		}
-		System.out.println("MEAN: " + mean);
-		System.out.println("VARIANCE: " + variance);
+		System.out.println("MEAN: " + popMean);
+		System.out.println("VARIANCE: " + popVariance);
 	}
 
 	public void generatePopData() {
 		switch (distType) {
 		case 0: // UNIFORM
-			datGen = new UniformDataGenerator();
+			popDataGen = new UniformDataGenerator();
 			System.out.println("\nUNIFORM");
 			break;
 		case 1: // SKEWED
@@ -73,13 +83,13 @@ public class Model {
 			break;
 		case 4: // RANDOM
 			System.out.println("\nRANDOM");
-			datGen = new RandomDataGenerator();
+			popDataGen = new RandomDataGenerator();
 			break;
 		}
-		popXVal = datGen.generateXData(lowerBound, upperBound, popSize);
-		popYVal = datGen.generateYData(popXVal, popSize);
-		mean = computePopMean();
-		variance = computePopVariance();
+		popXVal = popDataGen.generateXData(lowerBound, upperBound, popSize);
+		popYVal = popDataGen.generateYData(popXVal, popSize);
+		popMean = computePopMean();
+		popVariance = computePopVariance();
 		printData();
 	}
 
@@ -115,7 +125,7 @@ public class Model {
 			value += 1.0 * Math.pow(popXVal.get(i), 2) * popYVal.get(i);
 		}
 
-		value = value - Math.pow(mean, 2);
+		value = value - Math.pow(popMean, 2);
 
 		return roundOff(value);
 	}
@@ -207,19 +217,19 @@ public class Model {
 	}
 
 	public double getMean() {
-		return mean;
+		return popMean;
 	}
 
 	public void setMean(double mean) {
-		this.mean = mean;
+		this.popMean = mean;
 	}
 
 	public double getVariance() {
-		return variance;
+		return popVariance;
 	}
 
 	public void setVariance(double variance) {
-		this.variance = variance;
+		this.popVariance = variance;
 	}
 
 	public ArrayList<Integer> getPopXVal() {
