@@ -20,38 +20,27 @@ public class Model {
 	private int samSize; // n
 	private int distType;
 	
+	// POPULATION
 	private PopulationDataGenerator popDataGen;
-	private ArrayList<Integer> popXVal; // Population X
-	private ArrayList<Double> popYVal; // Population f(x)
-	private double popMean; // Population Mean
-	private double popVariance; // Population Variance
+	private ArrayList<Integer> popXVal;
+	private ArrayList<Double> popYVal;
+	private double popMean;
+	private double popVariance;
 	
+	// SAMPLE
 	private SampleDataGenerator samDataGen;
 	private ArrayList<Double> samXVal;
 	private ArrayList<Double> samYVal;
 	private double samMean;
 	private double samVariance;
-	
-	private Map<Integer, Integer> xMap = new HashMap<Integer, Integer>();
-	
 
 	public Model() {
 		// INDICATE DEFAULT VALUES HERE
 		lowerBound = 0;
-		upperBound = 10;
-		popSize = 30;
-		samSize = 10;
+		upperBound = 4;
+		popSize = 4;
+		samSize = 3;
 		distType = 0;
-
-		popDataGen = new UniformDataGenerator();
-		popXVal = popDataGen.generateXData(lowerBound, upperBound, popSize);
-		popYVal = popDataGen.generateYData(popXVal, popSize);
-
-		popMean = computePopMean();
-		popVariance = computePopVariance();
-		printData();
-
-		// generatePopDistTable();
 	}
 
 	/**
@@ -66,7 +55,7 @@ public class Model {
 		System.out.println("VARIANCE: " + popVariance);
 	}
 
-	public void generatePopData() {
+	public void generateData() {
 		switch (distType) {
 		case 0: // UNIFORM
 			popDataGen = new UniformDataGenerator();
@@ -86,11 +75,18 @@ public class Model {
 			popDataGen = new RandomDataGenerator();
 			break;
 		}
+		
 		popXVal = popDataGen.generateXData(lowerBound, upperBound, popSize);
 		popYVal = popDataGen.generateYData(popXVal, popSize);
 		popMean = computePopMean();
 		popVariance = computePopVariance();
 		printData();
+		
+		samDataGen = new SampleDataGenerator(popXVal, samSize);
+		samXVal = samDataGen.generateXData(samDataGen.generateSamples());
+		samYVal = samDataGen.generateYData(samXVal);
+		samMean = computeSamMean();
+		samVariance = computeSamVariance();
 	}
 
 	/**
@@ -129,6 +125,28 @@ public class Model {
 
 		return roundOff(value);
 	}
+	
+	public double computeSamMean() {
+		double value = 0;
+
+		for (int i = 0; i < samXVal.size(); i++) {
+			value += 1.0 * samXVal.get(i) * samYVal.get(i);
+		}
+
+		return roundOff(value);
+	}
+
+	public double computeSamVariance() {
+		double value = 0;
+
+		for (int i = 0; i < samXVal.size(); i++) {
+			value += 1.0 * Math.pow(samXVal.get(i), 2) * samYVal.get(i);
+		}
+
+		value = value - Math.pow(samMean, 2);
+
+		return roundOff(value);
+	}
 
 	public DefaultTableModel generatePopDistTable() {
 		DefaultTableModel popDistModel = new DefaultTableModel();
@@ -143,33 +161,42 @@ public class Model {
 			popDistModel.addRow(row);
 		}
 
-		// Get unique x values
-		/*
-		 * for(int i = 0; i < popSize; i++) { if
-		 * (!xMap.containsKey(popXVal.get(i))) xMap.put(popXVal.get(i), 1); else
-		 * xMap.put(popXVal.get(i), xMap.get(popXVal.get(i)) + 1); }
-		 * 
-		 * for (Map.Entry<Integer, Integer> i : xMap.entrySet()) { Object[] row
-		 * = new Object[2]; row[0] = i.getKey(); row[1] = roundOff(1.0 *
-		 * i.getValue() / popSize); popDistModel.addRow(row); }
-		 */
-
 		return popDistModel;
 	}
 
 	public DefaultCategoryDataset generatePopDataSet() {
 		DefaultCategoryDataset dataset = new DefaultCategoryDataset();
 
-		/*
-		 * Object[] keys = xMap.keySet().toArray();
-		 * 
-		 * for(int i = 0; i < keys.length; i++) { dataset.setValue((Number)
-		 * keys[i], "b", Integer.toString(i)); }
-		 */
-
 		for (int i = 0; i < popSize; i++) {
 			dataset.setValue(popYVal.get(i), "x",
 					Integer.toString(popXVal.get(i)));
+		}
+
+		return dataset;
+	}
+	
+	public DefaultTableModel generateSamDistTable() {
+		DefaultTableModel samDistModel = new DefaultTableModel();
+
+		String[] distributionTableColumn = { "x", "f(x)" };
+		samDistModel.setColumnIdentifiers(distributionTableColumn);
+
+		for (int i = 0; i < samXVal.size(); i++) {
+			Object[] row = new Object[2];
+			row[0] = samXVal.get(i);
+			row[1] = samYVal.get(i);
+			samDistModel.addRow(row);
+		}
+
+		return samDistModel;
+	}
+	
+	public DefaultCategoryDataset generateSamDataSet() {
+		DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+
+		for (int i = 0; i < samXVal.size(); i++) {
+			dataset.setValue(samYVal.get(i), "x",
+					Double.toString(samXVal.get(i)));
 		}
 
 		return dataset;
@@ -238,5 +265,37 @@ public class Model {
 
 	public void setPopXVal(ArrayList<Integer> popXVal) {
 		this.popXVal = popXVal;
+	}
+
+	public double getPopMean() {
+		return popMean;
+	}
+
+	public void setPopMean(double popMean) {
+		this.popMean = popMean;
+	}
+
+	public double getPopVariance() {
+		return popVariance;
+	}
+
+	public void setPopVariance(double popVariance) {
+		this.popVariance = popVariance;
+	}
+
+	public double getSamMean() {
+		return samMean;
+	}
+
+	public void setSamMean(double samMean) {
+		this.samMean = samMean;
+	}
+
+	public double getSamVariance() {
+		return samVariance;
+	}
+
+	public void setSamVariance(double samVariance) {
+		this.samVariance = samVariance;
 	}
 }

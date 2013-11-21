@@ -87,10 +87,16 @@ public class Controller {
 	}
 	
 	public void refreshUI() {
-		myModel.generatePopData();
-		myView.getLblPopMeanVal().setText(Double.toString(myModel.getMean()));
-		myView.getLblPopVarianceVal().setText(Double.toString(myModel.getVariance()));
+		myModel.generateData();
+		
+		myView.getLblPopMeanVal().setText(Double.toString(myModel.getPopMean()));
+		myView.getLblPopVarianceVal().setText(Double.toString(myModel.getPopVariance()));
 		myView.setPopDistTable(myModel.generatePopDistTable());
 		myView.setPopDistChart(myModel.generatePopDataSet());
+		
+		myView.getLblSamMeanVal().setText(Double.toString(myModel.getSamMean()));
+		myView.getLblSamVarianceVal().setText(Double.toString(myModel.getSamVariance()));
+		myView.setSamDistTable(myModel.generateSamDistTable());
+		myView.setSamDistChart(myModel.generateSamDataSet());
 	}
 }

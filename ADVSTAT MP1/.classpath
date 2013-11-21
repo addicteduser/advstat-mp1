@@ -4,5 +4,6 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
 	<classpathentry kind="lib" path="D:/Installers/_Development Installers/Java External JARs/JFreeChart 1.0.15/jfreechart-1.0.15.jar"/>
 	<classpathentry kind="lib" path="D:/Installers/_Development Installers/Java External JARs/JCommon 1.0.18/jcommon-1.0.18.jar"/>
+	<classpathentry kind="lib" path="D:/Installers/_Development Installers/Java External JARs/CombinatoricsLib 2.0/combinatoricslib-2.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

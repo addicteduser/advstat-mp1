@@ -44,8 +44,8 @@ public class View extends JFrame {
 	private JScrollPane scrSamMean;
 	private JLabel lblPopMean;
 	private JLabel lblPopVariance;
-	private JLabel lblMeanMean;
-	private JLabel lblMeanVariance;
+	private JLabel lblSamMean;
+	private JLabel lblSamVariance;
 	private JSlider sliderPopulation;
 	private JSlider sliderSample;
 	private JComboBox<String> distributionType;
@@ -56,8 +56,8 @@ public class View extends JFrame {
 	private JPanel pnlPopulation;
 	private JLabel lblPopVarianceVal;
 	private JPanel pnlSample;
-	private JLabel lblMeanMeanVal;
-	private JLabel lblMeanVarrianceVal;
+	private JLabel lblSamMeanVal;
+	private JLabel lblSamVarianceVal;
 
 	public View() {
 		setResizable(false);
@@ -92,7 +92,7 @@ public class View extends JFrame {
 		lblPopulation.setBounds(10, 288, 20, 30);
 		pnlPopulation.add(lblPopulation);
 
-		sliderPopulation = new JSlider(JSlider.HORIZONTAL, 1, 1000, 30);
+		sliderPopulation = new JSlider(JSlider.HORIZONTAL, 1, 100, 4);
 		sliderPopulation.setBounds(40, 288, 650, 30);
 		sliderPopulation.setName("sliderPopulation");
 		sliderPopulation.setMinorTickSpacing(1);
@@ -146,7 +146,7 @@ public class View extends JFrame {
 		pnlSample.add(lblSample);
 
 		sliderSample = new JSlider(JSlider.HORIZONTAL, 1,
-				Integer.parseInt(txtPopSize.getText()), 10);
+				Integer.parseInt(txtPopSize.getText()), 3);
 		sliderSample.setBounds(40, 14, 650, 30);
 		sliderSample.setName("sliderSample");
 		sliderSample.setMinorTickSpacing(1);
@@ -164,25 +164,25 @@ public class View extends JFrame {
 		scrSamGraph.setBounds(10, 54, 750, 260);
 		pnlSample.add(scrSamGraph);
 
-		lblMeanMean = new JLabel("Mean:");
-		lblMeanMean.setFont(new Font("Rockwell", Font.PLAIN, 16));
-		lblMeanMean.setBounds(790, 11, 210, 16);
-		pnlSample.add(lblMeanMean);
+		lblSamMean = new JLabel("Mean:");
+		lblSamMean.setFont(new Font("Rockwell", Font.PLAIN, 16));
+		lblSamMean.setBounds(790, 11, 210, 16);
+		pnlSample.add(lblSamMean);
 
-		lblMeanMeanVal = new JLabel("<mean>");
-		lblMeanMeanVal.setFont(new Font("Rockwell", Font.PLAIN, 16));
-		lblMeanMeanVal.setBounds(863, 11, 137, 16);
-		pnlSample.add(lblMeanMeanVal);
+		lblSamMeanVal = new JLabel("<mean>");
+		lblSamMeanVal.setFont(new Font("Rockwell", Font.PLAIN, 16));
+		lblSamMeanVal.setBounds(863, 11, 137, 16);
+		pnlSample.add(lblSamMeanVal);
 
-		lblMeanVariance = new JLabel("Variance:");
-		lblMeanVariance.setFont(new Font("Rockwell", Font.PLAIN, 16));
-		lblMeanVariance.setBounds(790, 28, 210, 16);
-		pnlSample.add(lblMeanVariance);
+		lblSamVariance = new JLabel("Variance:");
+		lblSamVariance.setFont(new Font("Rockwell", Font.PLAIN, 16));
+		lblSamVariance.setBounds(790, 28, 210, 16);
+		pnlSample.add(lblSamVariance);
 
-		lblMeanVarrianceVal = new JLabel("<variance>");
-		lblMeanVarrianceVal.setFont(new Font("Rockwell", Font.PLAIN, 16));
-		lblMeanVarrianceVal.setBounds(863, 28, 137, 16);
-		pnlSample.add(lblMeanVarrianceVal);
+		lblSamVarianceVal = new JLabel("<variance>");
+		lblSamVarianceVal.setFont(new Font("Rockwell", Font.PLAIN, 16));
+		lblSamVarianceVal.setBounds(863, 28, 137, 16);
+		pnlSample.add(lblSamVarianceVal);
 
 		scrSamDist = new JScrollPane();
 		scrSamDist.setBounds(790, 54, 210, 260);
@@ -212,7 +212,7 @@ public class View extends JFrame {
 		txtLowerBound.setBounds(1200, 82, 60, 30);
 		getContentPane().add(txtLowerBound);
 
-		txtUpperBound = new JTextField("10");
+		txtUpperBound = new JTextField("4");
 		txtUpperBound.setFont(new Font("Rockwell", Font.PLAIN, 20));
 		txtUpperBound.setColumns(10);
 		txtUpperBound.setBounds(1200, 122, 60, 30);
@@ -277,6 +277,19 @@ public class View extends JFrame {
 		ChartPanel popChartPanel = new ChartPanel(createChart(
 				dataset, "Population Distribution"));
 		scrPopGraph.setViewportView(popChartPanel);
+	}
+	
+	public void setSamDistTable(DefaultTableModel model) {
+		tblSam = new JTable();
+		tblSam.setModel(model);
+		scrSamDist.setViewportView(tblSam);
+		pnlSample.validate();
+	}
+	
+	public void setSamDistChart(DefaultCategoryDataset dataset) {
+		ChartPanel popChartPanel = new ChartPanel(createChart(
+				dataset, "Sampling Distribution"));
+		scrSamGraph.setViewportView(popChartPanel);
 	}
 
 	public JTextField getTxtPopSize() {
@@ -410,19 +423,19 @@ public class View extends JFrame {
 	}
 
 	public JLabel getMeanMean() {
-		return lblMeanMean;
+		return lblSamMean;
 	}
 
 	public void setMeanMean(JLabel meanMean) {
-		this.lblMeanMean = meanMean;
+		this.lblSamMean = meanMean;
 	}
 
 	public JLabel getMeanVariance() {
-		return lblMeanVariance;
+		return lblSamVariance;
 	}
 
 	public void setMeanVariance(JLabel meanVariance) {
-		this.lblMeanVariance = meanVariance;
+		this.lblSamVariance = meanVariance;
 	}
 
 	public JSlider getSliderPopulation() {
@@ -586,19 +599,19 @@ public class View extends JFrame {
 	}
 
 	public JLabel getLblMeanMean() {
-		return lblMeanMean;
+		return lblSamMean;
 	}
 
 	public void setLblMeanMean(JLabel lblMeanMean) {
-		this.lblMeanMean = lblMeanMean;
+		this.lblSamMean = lblMeanMean;
 	}
 
 	public JLabel getLblMeanVariance() {
-		return lblMeanVariance;
+		return lblSamVariance;
 	}
 
 	public void setLblMeanVariance(JLabel lblMeanVariance) {
-		this.lblMeanVariance = lblMeanVariance;
+		this.lblSamVariance = lblMeanVariance;
 	}
 
 	public JLabel getLblPopMeanVal() {
@@ -634,18 +647,58 @@ public class View extends JFrame {
 	}
 
 	public JLabel getLblMeanMeanVal() {
-		return lblMeanMeanVal;
+		return lblSamMeanVal;
 	}
 
 	public void setLblMeanMeanVal(JLabel lblMeanMeanVal) {
-		this.lblMeanMeanVal = lblMeanMeanVal;
+		this.lblSamMeanVal = lblMeanMeanVal;
 	}
 
 	public JLabel getLblMeanVarrianceVal() {
-		return lblMeanVarrianceVal;
+		return lblSamVarianceVal;
 	}
 
 	public void setLblMeanVarrianceVal(JLabel lblMeanVarrianceVal) {
-		this.lblMeanVarrianceVal = lblMeanVarrianceVal;
+		this.lblSamVarianceVal = lblMeanVarrianceVal;
+	}
+
+	public JLabel getLblSamMean() {
+		return lblSamMean;
+	}
+
+	public void setLblSamMean(JLabel lblSamMean) {
+		this.lblSamMean = lblSamMean;
+	}
+
+	public JLabel getLblSamVariance() {
+		return lblSamVariance;
+	}
+
+	public void setLblSamVariance(JLabel lblSamVariance) {
+		this.lblSamVariance = lblSamVariance;
+	}
+
+	public JLabel getLblSamMeanVal() {
+		return lblSamMeanVal;
+	}
+
+	public void setLblSamMeanVal(JLabel lblSamMeanVal) {
+		this.lblSamMeanVal = lblSamMeanVal;
+	}
+
+	public JLabel getLblSamVarrianceVal() {
+		return lblSamVarianceVal;
+	}
+
+	public void setLblSamVarrianceVal(JLabel lblSamVarrianceVal) {
+		this.lblSamVarianceVal = lblSamVarrianceVal;
+	}
+
+	public JLabel getLblSamVarianceVal() {
+		return lblSamVarianceVal;
+	}
+
+	public void setLblSamVarianceVal(JLabel lblSamVarianceVal) {
+		this.lblSamVarianceVal = lblSamVarianceVal;
 	}
 }

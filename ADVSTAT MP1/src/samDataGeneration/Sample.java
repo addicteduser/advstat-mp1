@@ -16,6 +16,22 @@ public class Sample {
 		for(int i = 0; i < sample.length; i++) {
 			samMean += sample[i];
 		}
-		samMean = 1.0 * samMean / sample.length;
+		samMean = roundOff(1.0 * samMean / sample.length);
+	}
+
+	public int[] getSample() {
+		return sample;
+	}
+
+	public void setSample(int[] sample) {
+		this.sample = sample;
+	}
+
+	public double getSamMean() {
+		return samMean;
+	}
+
+	public void setSamMean(double samMean) {
+		this.samMean = samMean;
 	}
 }
