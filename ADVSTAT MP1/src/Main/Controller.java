@@ -18,7 +18,7 @@ public class Controller {
 		this.myModel = model;
 		
 		setListeners();
-		refreshUI();
+		refreshAll();
 	}
 	
 	public void setListeners() {
@@ -32,7 +32,7 @@ public class Controller {
 				
 				
 				// CODE TO COMPUTE POP DIST
-				refreshUI();
+				refreshAll();
 			}
 
 		});
@@ -44,7 +44,7 @@ public class Controller {
 				myModel.setLowerBound(value);
 				
 				// CODE TO COMPUTE POP DIST
-				refreshUI();
+				refreshAll();
 			}
 		});
 
@@ -55,7 +55,7 @@ public class Controller {
 				myModel.setUpperBound(value);
 				
 				// CODE TO COMPUTE POP DIST
-				refreshUI();
+				refreshAll();
 			}
 		});
 		
@@ -68,7 +68,7 @@ public class Controller {
 				myModel.setPopSize(value);
 				
 				// CODE TO COMPUTE POP DIST
-				refreshUI();
+				refreshAll();
 			}
 		});
 		
@@ -82,13 +82,39 @@ public class Controller {
 					myModel.setPopSize(value);
 				} catch (NumberFormatException e) {
 				}
+				
+				refreshAll();
+			}
+		});
+		
+		// SAMPLE SLIDER
+		myView.getSliderSample().addChangeListener(new ChangeListener(){
+			public void stateChanged(ChangeEvent e) {		
+				int value = myView.getSliderSample().getValue();
+				myView.getTxtSamSize().setText(Integer.toString(value));
+				myModel.setSamSize(value);
+				
+				// CODE TO COMPUTE POP DIST
+				refreshSam();				
+			}
+		});
+
+		myView.getTxtSamSize().addKeyListener(new KeyAdapter(){			
+			@Override
+			public void keyReleased(KeyEvent ke) {
+				try {
+					int value = Integer.parseInt(myView.getTxtSamSize().getText());
+					myView.getSliderSample().setValue(value);
+					myModel.setSamSize(value);
+				} catch (NumberFormatException e) {
+				}
+				
+				refreshSam();
 			}
 		});
 	}
 	
-	public void refreshUI() {
-		myModel.generateData();
-		
+	public void refreshDetails() {
 		myView.getLblPopMeanVal().setText(Double.toString(myModel.getPopMean()));
 		myView.getLblPopVarianceVal().setText(Double.toString(myModel.getPopVariance()));
 		myView.setPopDistTable(myModel.generatePopDistTable());
@@ -98,5 +124,21 @@ public class Controller {
 		myView.getLblSamVarianceVal().setText(Double.toString(myModel.getSamVariance()));
 		myView.setSamDistTable(myModel.generateSamDistTable());
 		myView.setSamDistChart(myModel.generateSamDataSet());
+		myView.setSamMeanTable(myModel.generateSamMeanTable());
+	}
+	
+	public void refreshAll() {
+		myModel.generateData();
+		refreshDetails();
+	}
+	
+	public void refreshPop() {
+		myModel.generatePopData();
+		refreshDetails();
+	}
+
+	public void refreshSam() {
+		myModel.generateSamData();
+		refreshDetails();
 	}
 }

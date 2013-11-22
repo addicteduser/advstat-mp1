@@ -25,6 +25,7 @@ import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
+import javax.swing.JProgressBar;
 
 @SuppressWarnings("serial")
 public class View extends JFrame {
@@ -58,7 +59,14 @@ public class View extends JFrame {
 	private JPanel pnlSample;
 	private JLabel lblSamMeanVal;
 	private JLabel lblSamVarianceVal;
-
+	
+	public static final int LOW_BOUND = 0;
+	public static final int UP_BOUND = 10;
+	public static final int POP_SIZE = 10;
+	public static final int SAM_SIZE = 2;
+	public static final int DIST_TYPE = 0;
+	private JProgressBar progressBar;
+	
 	public View() {
 		setResizable(false);
 		initComponents();
@@ -68,7 +76,7 @@ public class View extends JFrame {
 
 	public void initComponents() {
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-		this.setSize(new Dimension(1300, 700));
+		this.setSize(new Dimension(1300, 711));
 		this.setVisible(true);
 		this.setTitle("ADVSTAT - Sampling Distribution Simulation");
 		this.setLocationRelativeTo(null);
@@ -92,7 +100,7 @@ public class View extends JFrame {
 		lblPopulation.setBounds(10, 288, 20, 30);
 		pnlPopulation.add(lblPopulation);
 
-		sliderPopulation = new JSlider(JSlider.HORIZONTAL, 1, 100, 4);
+		sliderPopulation = new JSlider(JSlider.HORIZONTAL, 1, 100, POP_SIZE);
 		sliderPopulation.setBounds(40, 288, 650, 30);
 		sliderPopulation.setName("sliderPopulation");
 		sliderPopulation.setMinorTickSpacing(1);
@@ -146,7 +154,7 @@ public class View extends JFrame {
 		pnlSample.add(lblSample);
 
 		sliderSample = new JSlider(JSlider.HORIZONTAL, 1,
-				Integer.parseInt(txtPopSize.getText()), 3);
+				Integer.parseInt(txtPopSize.getText()), SAM_SIZE);
 		sliderSample.setBounds(40, 14, 650, 30);
 		sliderSample.setName("sliderSample");
 		sliderSample.setMinorTickSpacing(1);
@@ -206,13 +214,13 @@ public class View extends JFrame {
 		lblLowerbound.setBounds(1032, 82, 143, 30);
 		getContentPane().add(lblLowerbound);
 
-		txtLowerBound = new JTextField("0");
+		txtLowerBound = new JTextField(Integer.toString(LOW_BOUND));
 		txtLowerBound.setFont(new Font("Rockwell", Font.PLAIN, 20));
 		txtLowerBound.setColumns(10);
 		txtLowerBound.setBounds(1200, 82, 60, 30);
 		getContentPane().add(txtLowerBound);
 
-		txtUpperBound = new JTextField("4");
+		txtUpperBound = new JTextField(Integer.toString(UP_BOUND));
 		txtUpperBound.setFont(new Font("Rockwell", Font.PLAIN, 20));
 		txtUpperBound.setColumns(10);
 		txtUpperBound.setBounds(1200, 122, 60, 30);
@@ -264,6 +272,10 @@ public class View extends JFrame {
 
 		tblSamMean.getColumnModel().getColumn(1).setResizable(false);
 		scrSamMean.setViewportView(tblSamMean);
+		
+		progressBar = new JProgressBar();
+		progressBar.setBounds(0, 668, 1294, 14);
+		getContentPane().add(progressBar);
 	}
 	
 	public void setPopDistTable(DefaultTableModel model) {
@@ -290,6 +302,13 @@ public class View extends JFrame {
 		ChartPanel popChartPanel = new ChartPanel(createChart(
 				dataset, "Sampling Distribution"));
 		scrSamGraph.setViewportView(popChartPanel);
+	}
+	
+	public void setSamMeanTable(DefaultTableModel model) {
+		tblSamMean = new JTable();
+		tblSamMean.setModel(model);
+		tblSamMean.getColumnModel().getColumn(1).setResizable(false);
+		scrSamMean.setViewportView(tblSamMean);
 	}
 
 	public JTextField getTxtPopSize() {

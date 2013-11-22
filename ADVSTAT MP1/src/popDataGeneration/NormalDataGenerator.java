@@ -6,89 +6,27 @@ import java.util.Random;
 
 public class NormalDataGenerator extends PopulationDataGenerator {
 
-	ArrayList<Integer> genValues = new ArrayList<Integer>();
-	ArrayList<Integer> midValues = new ArrayList<Integer>();
-	int middlefreq;
-	
 	@Override
 	public ArrayList<Integer> generateXData(int lowerBound, int upperBound,
 			int population) {
-		System.out.println("Lowerbound: " + lowerBound);
-		System.out.println("Upperbound: " + upperBound);
-		System.out.println("Population: " + population + "\n");
-		
+		// TODO Auto-generated method stub
 		xValues = new ArrayList<Integer>();
 		ran = new Random();
-		int theDataCount = 0;
-		
-		// For generating the list containing all possible values from population
-		for(int b = lowerBound; b <= upperBound; b++) {
-			genValues.add(b);
+
+		ArrayList<Integer> temp = new ArrayList<Integer>();
+
+		for (int k = 0; k < population; k++) {
+			temp.add((ran.nextInt(upperBound - lowerBound) + lowerBound));
 		}
-		
-		// This is for the trimming of population for the values of the middle
-		Double midTrim = genValues.size() * .40;
-		int theMidTrim = midTrim.intValue();
-		
-		// For generating the list containing all possible values for the middle
-		for(int a = theMidTrim; a <= upperBound - theMidTrim; a++) {
-			midValues.add(a);
+
+		Collections.sort(temp);
+		System.out.println(temp.toString());
+
+		// Fill the array with random x values
+		for (int a = 0; a < population; a++) {
+			xValues.add(temp.get(a));
 		}
-		
-		//int k = midValues.size();
-		System.out.println(midValues.toString() + "\n");
-		
-		// For selecting the middle and its frequency
-		int middle = midValues.get(ran.nextInt(midValues.size()));
-			if(population % 2 == 0) {
-				middlefreq = ran.nextInt(population / 2) * 2;
-			}
-			else middlefreq = ran.nextInt(population) + theMidTrim;
-		System.out.println("Middle point: " + middle + " / Frequency: " + middlefreq);
-		
-		
-		// Add the middle to the list of value + frequency
-		for(int c = 0; c < middlefreq; c++) {
-			xValues.add(middle);
-			theDataCount++;
-		}
-		
-		// Adding the other data
-		int step = ran.nextInt(theMidTrim) + 1; // to get the next set of points
-		int low = middle - step; // the lower point
-		int up = middle + step; // the upper point
-		int frequency = ran.nextInt((middlefreq) - 1) + 1; // the frequency of both points
-		System.out.println("Step: " + step + " / Points: " + low + " & " + up + " : frequency of each - " + frequency);
-		
-		while(theDataCount < population) {
-			int x = 0;
-			
-			while(theDataCount < population && x < frequency) {
-				xValues.add(low);
-				xValues.add(up);
-				theDataCount += 2;
-				x++;
-				
-				System.out.println("<+> Step: " + step + " / Points: " + low + " & " + up + " : frequency of each - " + frequency);
-			}
-		
-			
-			
-			step = ran.nextInt(step) + 1;
-			
-			if(low - step < 0)
-				low = 1;
-			else low = low - step;
-			
-			if(up + step > upperBound)
-				up = upperBound;
-			else up = up + step;
-			
-			frequency = ran.nextInt(frequency) + 1;
-		}
-		
-		Collections.sort(xValues);
-		
+
 		return xValues;
 	}
 
@@ -96,6 +34,53 @@ public class NormalDataGenerator extends PopulationDataGenerator {
 	public ArrayList<Double> generateYData(ArrayList<Integer> xData,
 			int population) {
 		// TODO Auto-generated method stub
-		return null;
+		ArrayList<Double> yData = new ArrayList<Double>();
+		
+		// Compute for the mean
+		double mean = computeMean(xData, population);
+
+		// Compute for the variance
+		double variance = computeVariance(xData, population);
+
+		// Get the 'y' value of the 'x'
+		for (int d = 0; d < population; d++) {
+			int theX = xData.get(d);
+			double theY;
+
+			theY = roundOff((1 / (Math.sqrt(variance * 2 * Math.PI)))
+					* (Math.pow(
+							Math.E,
+							((-1) * (Math.pow((theX - mean), 2) / (2 * variance))))));
+
+			yData.add(theY);
+		}
+		
+		System.out.println("yData: " + yData.toString());
+
+		return yData;
 	}
+
+	public double computeMean(ArrayList<Integer> xList, int population) {
+		double theSum = 0;
+
+		for (int b = 0; b < population; b++) {
+			theSum += xList.get(b);
+		}
+
+		return (theSum / population);
+	}
+
+	public double computeVariance(ArrayList<Integer> xList, int population) {
+		double mean = computeMean(xList, population);
+		double theVariance = 0;
+
+		for (int c = 0; c < population; c++) {
+			theVariance += Math.pow(xList.get(c) - mean, 2);
+		}
+
+		theVariance = (theVariance * 1.0) / population;
+
+		return theVariance;
+	}
+
 }

@@ -6,7 +6,7 @@ import java.util.Random;
 
 public class UniformDataGenerator extends PopulationDataGenerator {
 
-	ArrayList<Integer> genValues = new ArrayList<Integer>();
+	int frequency;
 
 	@Override
 	public ArrayList<Integer> generateXData(int lowerBound, int upperBound,
@@ -14,36 +14,26 @@ public class UniformDataGenerator extends PopulationDataGenerator {
 		ran = new Random();
 		xValues = new ArrayList<Integer>();
 
-		for (int a = lowerBound; a <= upperBound; a++) {
-			genValues.add(a);
-		}
-
-		Collections.shuffle(genValues);
-
-		int i = 0; // for population
-		int j = 0;
-		int k = 0;
-
+		int x;
+		int theX;
+		
 		do {
-			j = ran.nextInt(population) + 1;
-		} while (population % j != 0);
-		System.out.println(j);
-		while (i < population) {
-			for (int b = 0; b < j; b++) {
-				try {
-					xValues.add(genValues.get(k)); // <------------ KYLE!! Dito nagkaka-error minsan
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-				System.out.println(i + ": " + genValues.get(k));
-				i++;
-				// System.out.println(i);
+			x = ran.nextInt(population) + 2;
+			frequency = population / x;
+		} while(population % x != 0);
+
+		for(int i = 0; i < population / frequency; i++) {
+			theX = ran.nextInt(upperBound - lowerBound) + lowerBound;
+			
+			while(xValues.contains(theX)) {
+				theX = ran.nextInt(upperBound - lowerBound) + lowerBound;
 			}
-			k++;
+			
+			xValues.add(theX);
 		}
-
-		sortData(xValues);
-
+		
+		Collections.sort(xValues);
+		
 		return xValues;
 	}
 
@@ -52,8 +42,8 @@ public class UniformDataGenerator extends PopulationDataGenerator {
 			int population) {
 		ArrayList<Double> yData = new ArrayList<Double>();
 
-		for (int i = 0; i < xData.size(); i++) {
-			double value = roundOff(1.0 / population);
+		for (int i = 0; i < population / frequency; i++) {
+			double value = roundOff(1.0 * frequency / population);
 			yData.add(value);
 		}
 
